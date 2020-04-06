@@ -25,6 +25,7 @@
 #define _FORMATS_INES_H
 
 #include <experimental/filesystem>
+#include <ostream>
 
 #include "formats/deserializer.h"
 
@@ -39,6 +40,7 @@ class Ines_format : public Deserializer {
   ~Ines_format() = default;
 
   Rom load_rom(const std::experimental::filesystem::path &p) override;
+  void dump_rom(const Rom &rom, std::ostream &os) override;
 };
 };  // namespace fmt
 

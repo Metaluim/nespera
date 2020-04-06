@@ -25,6 +25,7 @@
 #define _FORMATS_DESERIALIZER_H
 
 #include <experimental/filesystem>
+#include <ostream>
 
 #include "formats/Rom.h"
 
@@ -32,6 +33,7 @@ namespace fmt {
 class Deserializer {
  public:
   virtual Rom load_rom(const std::experimental::filesystem::path &p) = 0;
+  virtual void dump_rom(const Rom &rom, std::ostream &os) = 0;
 };
 };  // namespace fmt
 

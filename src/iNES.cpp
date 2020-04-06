@@ -2,6 +2,7 @@
 
 #include <experimental/filesystem>
 #include <fstream>
+#include <iostream>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -84,16 +85,47 @@ Rom Ines_format::load_rom(const fs::path &p) {
   // Load the PRG ROM data (if available)
   if (num_16kb_banks != 0U) {
     size_t bank_sz = 16384 * num_16kb_banks;
-    ret.m_prg_data = std::make_shared<byte[]>(bank_sz);
+    ret.m_prg_data = std::shared_ptr<byte[]>(new byte[bank_sz]);
+    ret.m_prg_size = bank_sz;
+    // TODO: why doesn't this work?
+    // ret.m_prg_data = std::make_shared<byte[]>(bank_sz);
     fin.read(reinterpret_cast<char *>(ret.m_prg_data.get()), bank_sz);
   }
 
   // Load the CHR ROM data (if available)
   if (num_8kb_banks != 0U) {
     size_t bank_sz = 8191 * num_8kb_banks;
-    ret.m_chr_data = std::make_shared<byte[]>(bank_sz);
+    ret.m_chr_data = std::shared_ptr<byte[]>(new byte[bank_sz]);
+    // TODO: why doesn't this work?
+    // ret.m_chr_data = std::make_shared<byte[]>(bank_sz);
+    ret.m_chr_size = bank_sz;
     fin.read(reinterpret_cast<char *>(ret.m_chr_data.get()), bank_sz);
   }
 
   return ret;
+}
+
+void Ines_format::dump_rom(const Rom &rom, std::ostream &os) {
+  os << "Dumping ROM contents..." << std::endl;
+
+  os << "Format: ";
+  switch (rom.m_version) {
+    case Version::iNES:
+      os << "iNES" << std::endl;
+      break;
+    case Version::NES2_0:
+      os << "NES 2.0" << std::endl;
+      break;
+  }
+
+  os << "PRG section size: " << rom.m_prg_size << std::endl;
+  os << "CHR section size: " << rom.m_chr_size << std::endl;
+
+  os << "=====================" << std::endl;
+  os << "PRG section dump..." << std::endl;
+  dump_hex(os, rom.m_prg_data, rom.m_prg_size);
+
+  os << "=====================" << std::endl;
+  os << "CHR section dump..." << std::endl;
+  dump_hex(os, rom.m_chr_data, rom.m_chr_size);
 }

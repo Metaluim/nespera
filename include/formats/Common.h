@@ -33,6 +33,9 @@ enum class Version { iNES, NES2_0 };
 typedef unsigned char byte;
 typedef std::shared_ptr<byte[]> byte_mem_sptr;
 
+std::ostream &dump_hex(std::ostream &os, const byte_mem_sptr &buffer,
+                       std::size_t bufsize);
+
 };  // namespace fmt
 
 #endif  // _FMT_COMMON_H

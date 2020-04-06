@@ -22,6 +22,7 @@
 #ifndef _FORMAT_ROM_H
 #define _FORMAT_ROM_H
 
+#include <bits/c++config.h>
 #include <memory>
 
 #include "formats/Common.h"
@@ -37,7 +38,9 @@ class Rom {
   Version m_version;             // the format version
   byte_mem_sptr m_trainer_data;  // cheat data
   byte_mem_sptr m_prg_data;      // the actual game data
+  std::size_t m_prg_size;        // the size of game data
   byte_mem_sptr m_chr_data;      // the pattern table data
+  std::size_t m_chr_size;        // the size of pattern table data
   byte_mem_sptr m_instrom;       // ???
   byte_mem_sptr m_prom;          // ???
   byte_mem_sptr m_trailer;       // optional section at the end of rom

@@ -4,6 +4,7 @@ set(SRCs_NESPERA nespera.cpp)
 set(SRCs_LOADER loader.cpp)
 
 set(SRCs_FORMATS_LIB
+  Common.cpp
   iNES.cpp
 )
 
